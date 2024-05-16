@@ -32,8 +32,6 @@ if "api_key" not in st.session_state:
 else:
     os.environ["OPENAI_API_KEY"] = st.session_state["api_key"]
 
-st.write(st.session_state["api_key"])
-
 async def get_text_block(uploaded_file, num_rows):
     df = pd.read_csv(uploaded_file).sample(n=num_rows)
     
@@ -155,7 +153,7 @@ with st.sidebar:
     st.header("Analysis Result") 
     #st.write(st.session_state.uploaded_file.name)
     if st.session_state.uploaded_file is None:
-        st.write('Please uplaod a dataset first!')
+        st.write('Please upload a dataset first!')
     elif st.session_state.analysis_metrics is not None:
         
         col1, col2, col3 = st.sidebar.columns(3)

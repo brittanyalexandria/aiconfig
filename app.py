@@ -32,7 +32,7 @@ config.callback_manager = CallbackManager([])
 #         st.info("A Valid OpenAI API key is required")
 #         st.stop()
 # else:
-api_key = st.secrets["OPENAI_API_KEY"]
+api_key = st.secrets["OPEN_API_KEY"]
 if 'api_key' not in st.session_state:
     st.session_state.api_key = api_key
     

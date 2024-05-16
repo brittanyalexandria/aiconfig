@@ -13,6 +13,8 @@ import asyncio
 config = AIConfigRuntime.load('trend_analysis_model.aiconfig.json')
 config.callback_manager = CallbackManager([])
 
+
+
 # # Obtain API Key
 # def validate_api_key(api_key):
 #     return api_keys
@@ -30,6 +32,10 @@ config.callback_manager = CallbackManager([])
 #         st.info("A Valid OpenAI API key is required")
 #         st.stop()
 # else:
+
+if 'api_key' not in st.session_state:
+    st.session_state.api_key = ""
+
 os.getenv["OPENAI_API_KEY"] = st.session_state["api_key"]
 
 async def get_text_block(uploaded_file, num_rows):

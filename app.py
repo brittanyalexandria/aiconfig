@@ -134,11 +134,11 @@ elif num_rows > 0:
             st.session_state.file_replaced = False
             
         if st.button("Submit", type='primary'):
-            try:
-                with st.spinner("Processing the request..."):
-                    st.session_state.analysis_result, st.session_state.analysis_metrics = asyncio.run(perform_sentiment_analysis(uploaded_file, num_rows))                   
-            except Exception:
-                st.warning("Cannot process request, please try again")
+            # try:
+            with st.spinner("Processing the request..."):
+                st.session_state.analysis_result, st.session_state.analysis_metrics = asyncio.run(perform_sentiment_analysis(uploaded_file, num_rows))                   
+            # except Exception:
+            #     st.warning("Cannot process request, please try again")
                 
         if (st.session_state.analysis_result is not None):
             st.header('')

@@ -1,0 +1,93 @@
+{
+  "name": "TrendAnalysis",
+  "schema_version": "latest",
+  "metadata": {
+    "models": {
+      "gpt-3.5-turbo": {
+        "model": "gpt-3.5-turbo",
+        "top_p": 1,
+        "temperature": 1,
+        "presence_penalty": 0,
+        "frequency_penalty": 0
+      },
+      "gpt-4": {
+        "model": "gpt-4",
+        "top_p": 1,
+        "temperature": 1,
+        "presence_penalty": 0,
+        "frequency_penalty": 0
+      }
+    },
+    "parameters": {}
+  },
+  "prompts": [
+    {
+      "name": "get_dropped_columns",
+      "input": "I will give you a JSON object that represents a pandas df where the keys are the column headers and the value is the 1st row of the table. Based on the column headers name and other information available, return the column headers that are not the text/content needed for sentiment analysis. \n\nOutput this as a python list with single quotes, not double quotes. (e.g. ['text']) Do not provide any additional commentary, as this output will be passed onto a function.\n\nI will give you the JSON object now:\n{{ json_object }}",
+      "metadata": {
+        "model": {
+          "name": "gpt-3.5-turbo",
+          "settings": {}
+        },
+        "parameters": {
+          "json_object": "{}"
+        },
+        "remember_chat_context": false
+      }
+    },
+    {
+      "name": "preprocess_steps",
+      "input": "I will give you some data in the following template:\nrow 1 entry\n///\nrow 2 entry\n///\n\nEach row is separated by ///, this is just a separator \nPerform the following pre-processing steps to prep the data for sentiment analysis:\n- Remove any unnecessary characters, special characters, punctuation, and extra white spaces.\n- Remove common words that do not carry meaning (e.g., 'the', 'is', 'and' )\n\nThe output MUST follow the following numbered list format: \n1. row1 preprocessed output\n2. row2 preprocessed output\n\n\nDo not repeat the data before preprocessing. Only output the preprocessed text. Do not provide ANY additional commentary or fields.\n\nAsk me for the data now.",
+      "metadata": {
+        "model": {
+          "name": "gpt-4",
+          "settings": {}
+        },
+        "parameters": {},
+        "remember_chat_context": true
+      }
+    },
+    {
+      "name": "get_preprocessed",
+      "input": "{{ dataset_rows }}",
+      "metadata": {
+        "model": {
+          "name": "gpt-4",
+          "settings": {
+            "system_prompt": ""
+          }
+        },
+        "parameters": {
+          "dataset_rows": ""
+        },
+        "remember_chat_context": true
+      }
+    },
+    {
+      "name": "get_analysis",
+      "input": "Given some data, provide a summary in a few sentences regarding the overall sentiment towards the subject. Try to refrain from simply saying the sentiment is \"mixed\", or from explaining each row individually. Provide some reasons to support the answer. Response should be clear, concise and in an orderly fashion (e.g., use lists when necessary)\n{{preprocess_output.output}}",
+      "metadata": {
+        "model": {
+          "name": "gpt-4",
+          "settings": {
+            "system_prompt": "You are an expert that has a remarkable ability to grasp the sentiment of text. Your deep understanding of language allows you to accurately interpret the mood, tone, and underlying message of a piece of text. You are adept at discerning subtle cues and are valuable in contexts where understanding sentiment is crucial."
+          }
+        },
+        "parameters": {},
+        "remember_chat_context": true
+      }
+    },
+    {
+      "name": "get_metrics",
+      "input": "Return how many rows you classified as positive, negative, or neutral and total count, formatted in a JSON object.\n{\n\"Positive\": x,\n\"Negative\": y,\n\"Neutral\": z, \n\"Count\": c\n}",
+      "metadata": {
+        "model": {
+          "name": "gpt-4",
+          "settings": {}
+        },
+        "parameters": {},
+        "remember_chat_context": true
+      }
+    }
+  ]
+}

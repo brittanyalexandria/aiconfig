@@ -13,24 +13,24 @@ import asyncio
 config = AIConfigRuntime.load('trend_analysis_model.aiconfig.json')
 config.callback_manager = CallbackManager([])
 
-# Obtain API Key
-def validate_api_key(api_key):
-    return api_key
+# # Obtain API Key
+# def validate_api_key(api_key):
+#     return api_keys
 
-if "api_key" not in st.session_state:
-    api_key = st.text_input("Enter your OpenAI API key", type="password")
-    is_valid = validate_api_key(api_key)
-    if is_valid:
-        st.session_state["api_key"] = api_key
-        st.rerun()
-    elif not is_valid and api_key:
-        st.error("Incorrect or invalid key")
-        st.stop()
-    else:
-        st.info("A Valid OpenAI API key is required")
-        st.stop()
-else:
-    os.environ["OPENAI_API_KEY"] = st.session_state["api_key"]
+# if "api_key" not in st.session_state:
+#     api_key = st.text_input("Enter your OpenAI API key", type="password")
+#     is_valid = validate_api_key(api_key)
+#     if is_valid:
+#         st.session_state["api_key"] = api_key
+#         st.rerun()
+#     elif not is_valid and api_key:
+#         st.error("Incorrect or invalid key")
+#         st.stop()
+#     else:
+#         st.info("A Valid OpenAI API key is required")
+#         st.stop()
+# else:
+st.session_state["api_key"] = os.environ["OPENAI_API_KEY"]
 
 async def get_text_block(uploaded_file, num_rows):
     df = pd.read_csv(uploaded_file).sample(n=num_rows)

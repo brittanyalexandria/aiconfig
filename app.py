@@ -30,7 +30,7 @@ config.callback_manager = CallbackManager([])
 #         st.info("A Valid OpenAI API key is required")
 #         st.stop()
 # else:
-st.session_state["api_key"] = os.getenv["OPENAI_API_KEY"]
+os.getenv["OPENAI_API_KEY"] = st.session_state["api_key"]
 
 async def get_text_block(uploaded_file, num_rows):
     df = pd.read_csv(uploaded_file).sample(n=num_rows)
